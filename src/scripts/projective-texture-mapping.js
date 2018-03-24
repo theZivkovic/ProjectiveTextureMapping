@@ -29,19 +29,13 @@ export default class ProjectiveTextureMapping {
 
     constructor(containerDiv){
         
-        this.containerDiv = containerDiv;
-
+        this.containerDiv = document.querySelector('#container');
+        
         this.start = this.start.bind(this);
         this.stop = this.stop.bind(this);
         this.animate = this.animate.bind(this);
 
-        // this.onRotateProjectorLeftClick = this.onRotateProjectorLeftClick.bind(this);
-        // this.onRotateProjectorRightClick = this.onRotateProjectorRightClick.bind(this);
-        // this.onRotateProjectorUpClick = this.onRotateProjectorUpClick.bind(this);
-        // this.onRotateProjectorDownClick = this.onRotateProjectorDownClick.bind(this);
-        // this.onIncreaseProjectionSize = this.onIncreaseProjectionSize.bind(this);
-        // this.onDecreaseProjectionSize = this.onDecreaseProjectionSize.bind(this);
-
+        this.initializeUI();
         this.initialize3DContext();
 
         Promise.all([
@@ -49,7 +43,6 @@ export default class ProjectiveTextureMapping {
           this.loadProjectorTexture()
         ])
         .then(() => {
-          
           this.initializeSceneObjects();
           this.initializeCamera();
           this.initializeProjector();
@@ -57,6 +50,23 @@ export default class ProjectiveTextureMapping {
           this.initializeShaderMaterialUniforms();
           this.start();
         });
+    }
+
+    initializeUI() {
+      const rotateLeftBtn = document.querySelector('#rotateLeft');
+      const rotateRightBtn = document.querySelector('#rotateRight');
+      const rotateUpBtn = document.querySelector('#rotateUp');
+      const rotateDownBtn = document.querySelector('#rotateDown');
+      const increaseProjectionBtn = document.querySelector('#increaseProjection');
+      const decreaseProjectionBtn = document.querySelector('#decreaseProjection');
+
+      rotateLeftBtn.addEventListener("click", (e) =>  this.onRotateProjectorLeftClick(e));
+      rotateRightBtn.addEventListener("click", (e) =>  this.onRotateProjectorRightClick(e));
+      rotateUpBtn.addEventListener("click", (e) =>  this.onRotateProjectorUpClick(e));
+      rotateDownBtn.addEventListener("click", (e) =>  this.onRotateProjectorDownClick(e));
+      increaseProjectionBtn.addEventListener("click", (e) =>  this.onIncreaseProjectionSize(e));
+      decreaseProjectionBtn.addEventListener("click", (e) =>  this.onDecreaseProjectionSize(e));
+
     }
 
     initialize3DContext() {
@@ -186,68 +196,41 @@ export default class ProjectiveTextureMapping {
       this.renderer.render(this.scene, this.camera)
     }
 
-      // onRotateProjectorLeftClick(e){
-      //   this.projectorPhi += PROJECTOR_STEP_ANGLE;
-      //   this.updateProjectorFromSphericalCoords();
-      //   this.syncProjectorModelWithActualProjector();
-      // }
+    onRotateProjectorLeftClick(e){
+      this.projectorPhi += PROJECTOR_STEP_ANGLE;
+      this.updateProjectorFromSphericalCoords();
+      this.syncProjectorModelWithActualProjector();
+    }
 
-      // onRotateProjectorRightClick(e){
-      //   this.projectorPhi -= PROJECTOR_STEP_ANGLE;
-      //   this.updateProjectorFromSphericalCoords();
-      //   this.syncProjectorModelWithActualProjector();
-      // }
+    onRotateProjectorRightClick(e){
+      this.projectorPhi -= PROJECTOR_STEP_ANGLE;
+      this.updateProjectorFromSphericalCoords();
+      this.syncProjectorModelWithActualProjector();
+    }
 
-      // onRotateProjectorUpClick(e){
-      //   if (this.projectorTheta + PROJECTOR_STEP_ANGLE < PROJECTOR_MAX_VERICAL_ANGLE)
-      //     this.projectorTheta += PROJECTOR_STEP_ANGLE;
-      //   this.updateProjectorFromSphericalCoords();
-      //   this.syncProjectorModelWithActualProjector();
-      // }
+    onRotateProjectorUpClick(e){
+      if (this.projectorTheta + PROJECTOR_STEP_ANGLE < PROJECTOR_MAX_VERICAL_ANGLE)
+        this.projectorTheta += PROJECTOR_STEP_ANGLE;
+      this.updateProjectorFromSphericalCoords();
+      this.syncProjectorModelWithActualProjector();
+    }
 
-      // onRotateProjectorDownClick(e){
-      //   if (this.projectorTheta - PROJECTOR_STEP_ANGLE > PROJECTOR_MIN_VERTICAL_ANGLE)
-      //     this.projectorTheta -= PROJECTOR_STEP_ANGLE;
-      //   this.updateProjectorFromSphericalCoords();
-      //   this.syncProjectorModelWithActualProjector();
-      // }
+    onRotateProjectorDownClick(e){
+      if (this.projectorTheta - PROJECTOR_STEP_ANGLE > PROJECTOR_MIN_VERTICAL_ANGLE)
+        this.projectorTheta -= PROJECTOR_STEP_ANGLE;
+      this.updateProjectorFromSphericalCoords();
+      this.syncProjectorModelWithActualProjector();
+    }
 
-      // onIncreaseProjectionSize(e){
-      //   if (this.projectedImageScale + PROJECTOR_SCALE_STEP < PROJECTOR_MAX_SCALE)
-      //     this.projectedImageScale += PROJECTOR_SCALE_STEP;
-      //   this.shaderMaterial.uniforms.projectedImageScale.value = this.projectedImageScale;
-      // }
+    onIncreaseProjectionSize(e){
+      if (this.projectedImageScale + PROJECTOR_SCALE_STEP < PROJECTOR_MAX_SCALE)
+        this.projectedImageScale += PROJECTOR_SCALE_STEP;
+      this.shaderMaterial.uniforms.projectedImageScale.value = this.projectedImageScale;
+    }
 
-      // onDecreaseProjectionSize(e){
-      //   if (this.projectedImageScale - PROJECTOR_SCALE_STEP > PROJECTOR_MIN_SCALE)
-      //     this.projectedImageScale -= PROJECTOR_SCALE_STEP;
-      //   this.shaderMaterial.uniforms.projectedImageScale.value = this.projectedImageScale;
-      // }
-
-    //   render() {
-    //     return (
-    //       <div>
-    //         <div className="canvas-container"
-    //             ref={(mount) => { this.mount = mount }}
-    //         />
-            
-    //         <div className="canvas-manipulation-bar"> 
-    //             <input type="image" src={rotateLeftPath} onClick={this.onRotateProjectorLeftClick}/>
-    //             <input type="image" src={rotateRightPath} onClick={this.onRotateProjectorRightClick}/>
-    //             <input type="image" src={rotateUpPath} onClick={this.onRotateProjectorUpClick}/>
-    //             <input type="image" src={rotateDownPath} onClick={this.onRotateProjectorDownClick}/>
-                
-    //             <input type="image" src={increasePath} onClick={this.onIncreaseProjectionSize}/>
-    //             <input type="image" src={decreasePath} onClick={this.onDecreaseProjectionSize}/>
-    //         </div>
-
-    //         <div className="canvas-description-bar">
-    //           <i>Rotate projctor or increase or decrease image projection size using buttons. Rotate and zoom
-    //             camera by using mouse.
-    //           </i>
-    //         </div>
-    //       </div>      
-           
-    //     );
-    // }
+    onDecreaseProjectionSize(e){
+      if (this.projectedImageScale - PROJECTOR_SCALE_STEP > PROJECTOR_MIN_SCALE)
+        this.projectedImageScale -= PROJECTOR_SCALE_STEP;
+      this.shaderMaterial.uniforms.projectedImageScale.value = this.projectedImageScale;
+    }
 }

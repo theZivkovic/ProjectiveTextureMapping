@@ -6,6 +6,6 @@ import ProjectiveTextureMapping from './projective-texture-mapping';
 
 
 window.onload = () => {
-	let canvas = document.querySelector('#container');
-	const app = new ProjectiveTextureMapping(canvas);
+	
+	const app = new ProjectiveTextureMapping();
 };
