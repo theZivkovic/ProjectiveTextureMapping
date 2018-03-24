@@ -27,7 +27,7 @@ const PROJECTOR_SCALE_STEP = 0.1;
 
 export default class ProjectiveTextureMapping {
 
-    constructor(containerDiv){
+    constructor(){
         
         this.containerDiv = document.querySelector('#container');
         
@@ -49,7 +49,10 @@ export default class ProjectiveTextureMapping {
           this.initializeLights();
           this.initializeShaderMaterialUniforms();
           this.start();
+          this.onResize();
         });
+
+        window.onresize = this.onResize.bind(this);
     }
 
     initializeUI() {
@@ -66,7 +69,6 @@ export default class ProjectiveTextureMapping {
       rotateDownBtn.addEventListener("click", (e) =>  this.onRotateProjectorDownClick(e));
       increaseProjectionBtn.addEventListener("click", (e) =>  this.onIncreaseProjectionSize(e));
       decreaseProjectionBtn.addEventListener("click", (e) =>  this.onDecreaseProjectionSize(e));
-
     }
 
     initialize3DContext() {
@@ -76,7 +78,7 @@ export default class ProjectiveTextureMapping {
       this.renderer.setClearColor('#000000')
       this.renderer.setSize(this.containerDiv.clientWidth, this.containerDiv.clientHeight);
 
-      this.containerDiv.appendChild(this.renderer.domElement)
+      this.containerDiv.appendChild(this.renderer.domElement);
     }
 
     initializeSceneObjects() {
@@ -232,5 +234,11 @@ export default class ProjectiveTextureMapping {
       if (this.projectedImageScale - PROJECTOR_SCALE_STEP > PROJECTOR_MIN_SCALE)
         this.projectedImageScale -= PROJECTOR_SCALE_STEP;
       this.shaderMaterial.uniforms.projectedImageScale.value = this.projectedImageScale;
+    }
+
+    onResize(){
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize( window.innerWidth - 5, window.innerHeight - 5 );
     }
 }
