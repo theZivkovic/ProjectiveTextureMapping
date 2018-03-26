@@ -5,12 +5,18 @@ projective texture mapping that you can find here: [thezivkovic.com/articles/pro
 
 ### What you can do with it?
 
-When you run the project you should see the projector projecting and image to the scene, which 
-contains one sphere and one cube. 
+When you run the project you should see the projector projecting and image onto the scene, which 
+contains one sphere and one cube. You can
+- rotate the scene using mouse click&drag
+- zoom in/out the scene using mouse wheel
+- rotate projector around the scene origin using buttons
+- increase projection size using buttons
+
 
 ### How to run?
 ```
 - npm install
 - npm run dev
-- go to localhost:8080 in your browser
 ```
+
+then go to localhost:3000 in your browser
