@@ -1,7 +1,6 @@
 # Projective texture mapping
 
-This is a small ThreeJS project that contains the code for my article about
-projective texture mapping that you can find here: [thezivkovic.com/articles/projective-texture-mapping](http://www.thezivkovic.com/articles/projective-texture-mapping).
+This is a small project that presents the implementation of the projective texture mapping in ThreeJS.
 
 ### What you can do with it?
 
